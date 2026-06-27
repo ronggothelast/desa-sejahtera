@@ -1,7 +1,5 @@
 /**
- * pages/Tentang.jsx
- * Halaman Tentang Desa: Visi Misi, Struktur Organisasi, Sejarah.
- * Data: village.js
+ * pages/Tentang.jsx – tanpa emoji.
  */
 import PageWrapper from '../components/layout/PageWrapper';
 import { useScrollReveal } from '../hooks/useScrollReveal';
@@ -9,84 +7,78 @@ import { villageProfile, villageVision, villageHistory, villageStructure } from 
 
 function Eyebrow({ children }) {
   return (
-    <span
-      className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest mb-4"
-      style={{ background: 'var(--color-desa-green-dim)', color: 'var(--color-desa-green)', letterSpacing: '0.15em' }}
-    >
+    <span style={{
+      display: 'inline-block', padding: '0.25rem 0.75rem', borderRadius: '200px',
+      fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
+      background: 'var(--color-desa-green-dim)', color: 'var(--color-desa-green)', marginBottom: '1rem',
+    }}>
       {children}
     </span>
   );
 }
 
 export default function Tentang() {
-  const heroRef = useScrollReveal({ threshold: 0.05 });
-  const visiRef = useScrollReveal();
+  const heroRef    = useScrollReveal({ threshold: 0.05 });
+  const visiRef    = useScrollReveal();
   const historyRef = useScrollReveal();
   const strukturRef = useScrollReveal();
 
   return (
     <PageWrapper>
-      {/* ── Hero ── */}
-      <section className="py-32 px-6 text-center" style={{ background: 'linear-gradient(160deg, #e8f5ef 0%, var(--color-desa-bg) 60%)' }}>
-        <div ref={heroRef} className="reveal max-w-2xl mx-auto">
+
+      {/* Hero */}
+      <section style={{ padding: '8rem 1.5rem 5rem', textAlign: 'center', background: '#F7F5F0', borderBottom: '1px solid var(--color-desa-border)' }}>
+        <div ref={heroRef} className="reveal" style={{ maxWidth: 600, margin: '0 auto' }}>
           <Eyebrow>Profil Desa</Eyebrow>
-          <h1
-            className="font-black mb-6"
-            style={{ fontSize: 'clamp(2.4rem, 6vw, 4rem)', letterSpacing: '-0.03em', color: 'var(--color-desa-text)' }}
-          >
-            Tentang <span style={{ color: 'var(--color-desa-green)' }}>Desa Sejahtera</span>
+          <h1 style={{ fontWeight: 900, fontSize: 'clamp(2.4rem, 7vw, 4.5rem)', letterSpacing: '-0.04em', lineHeight: 1.0, color: 'var(--color-desa-text)', marginBottom: '1rem' }}>
+            Tentang<br /><span style={{ color: 'var(--color-desa-green)' }}>Desa Sejahtera</span>
           </h1>
-          <p style={{ color: 'var(--color-desa-muted)' }} className="text-lg leading-relaxed">
+          <p style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--color-desa-muted)', marginBottom: '2.5rem' }}>
             {villageProfile.kecamatan} · {villageProfile.kabupaten} · {villageProfile.provinsi}
           </p>
 
-          {/* Statistik singkat */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+          {/* Statistik */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', maxWidth: 380, margin: '0 auto' }}>
             {[
-              { label: 'Luas Wilayah', value: villageProfile.luasWilayah },
-              { label: 'Penduduk', value: villageProfile.jumlahPenduduk },
-              { label: 'Kepala Keluarga', value: villageProfile.jumlahKK },
-              { label: 'Berdiri', value: '1921' },
-            ].map((stat) => (
-              <div
-                key={stat.label}
-                className="rounded-2xl p-4 text-center"
-                style={{ background: '#fff', border: '1px solid var(--color-desa-border)' }}
-              >
-                <p className="font-black text-2xl" style={{ color: 'var(--color-desa-green)', letterSpacing: '-0.02em' }}>
-                  {stat.value}
-                </p>
-                <p className="text-xs mt-1" style={{ color: 'var(--color-desa-muted)' }}>{stat.label}</p>
+              { v: villageProfile.luasWilayah, l: 'Luas Wilayah' },
+              { v: villageProfile.jumlahPenduduk, l: 'Penduduk' },
+              { v: villageProfile.jumlahKK, l: 'Kepala Keluarga' },
+              { v: '1921', l: 'Tahun Berdiri' },
+            ].map(s => (
+              <div key={s.l} style={{ background: '#fff', border: '1px solid var(--color-desa-border)', borderRadius: '1rem', padding: '1rem', textAlign: 'center' }}>
+                <p style={{ fontWeight: 800, fontSize: '1.3rem', color: 'var(--color-desa-green)', letterSpacing: '-0.03em', lineHeight: 1, margin: 0 }}>{s.v}</p>
+                <p style={{ fontSize: '0.72rem', color: 'var(--color-desa-muted)', marginTop: '0.2rem', letterSpacing: '0.04em' }}>{s.l}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Visi & Misi ── */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+      {/* Visi & Misi */}
+      <section style={{ padding: '5rem 1.5rem', background: '#fff' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3.5rem' }}>
           <div ref={visiRef} className="reveal">
             <Eyebrow>Visi</Eyebrow>
-            <p
-              className="font-bold text-xl leading-relaxed"
-              style={{ color: 'var(--color-desa-text)', letterSpacing: '-0.01em' }}
-            >
+            <p style={{ fontWeight: 700, fontSize: '1.1rem', lineHeight: 1.65, color: 'var(--color-desa-text)', borderLeft: '3px solid var(--color-desa-green)', paddingLeft: '1.25rem' }}>
               "{villageVision.visi}"
             </p>
           </div>
           <div>
             <Eyebrow>Misi</Eyebrow>
-            <ol className="flex flex-col gap-4">
+            <ol style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem', padding: 0, listStyle: 'none' }}>
               {villageVision.misi.map((item, i) => (
-                <li key={i} className="flex gap-3 items-start">
-                  <span
-                    className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white mt-0.5"
-                    style={{ background: 'var(--color-desa-green)' }}
-                  >
+                <li key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+                  <span style={{
+                    flexShrink: 0, width: 26, height: 26,
+                    borderRadius: '50%',
+                    background: 'var(--color-desa-green)',
+                    color: '#fff',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '0.75rem', fontWeight: 700, marginTop: 2,
+                  }}>
                     {i + 1}
                   </span>
-                  <p className="text-sm leading-relaxed" style={{ color: 'var(--color-desa-muted)' }}>{item}</p>
+                  <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: 'var(--color-desa-muted)', margin: 0 }}>{item}</p>
                 </li>
               ))}
             </ol>
@@ -94,59 +86,68 @@ export default function Tentang() {
         </div>
       </section>
 
-      {/* ── Sejarah ── */}
-      <section className="py-24 px-6" style={{ background: 'var(--color-desa-surface)' }}>
-        <div className="max-w-3xl mx-auto" ref={historyRef}>
-          <div className="reveal text-center mb-12">
-            <Eyebrow>Sejarah</Eyebrow>
-            <h2 className="font-bold" style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', letterSpacing: '-0.02em', color: 'var(--color-desa-text)' }}>
-              Lebih dari Satu Abad
-            </h2>
-          </div>
-          <p className="reveal text-base leading-[2] whitespace-pre-line" style={{ color: 'var(--color-desa-muted)' }}>
+      {/* Sejarah */}
+      <section style={{ padding: '5rem 1.5rem', background: 'var(--color-desa-bg)' }}>
+        <div ref={historyRef} className="reveal" style={{ maxWidth: 720, margin: '0 auto' }}>
+          <Eyebrow>Sejarah</Eyebrow>
+          <h2 style={{ fontWeight: 800, fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', letterSpacing: '-0.03em', color: 'var(--color-desa-text)', marginBottom: '1.5rem' }}>
+            Lebih dari Satu Abad Berdiri
+          </h2>
+          <p style={{ fontSize: '0.9375rem', lineHeight: 2, color: 'var(--color-desa-muted)', whiteSpace: 'pre-line' }}>
             {villageHistory}
           </p>
         </div>
       </section>
 
-      {/* ── Struktur Organisasi ── */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div ref={strukturRef} className="reveal text-center mb-14">
+      {/* Struktur Organisasi */}
+      <section style={{ padding: '5rem 1.5rem', background: '#fff' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          <div ref={strukturRef} className="reveal" style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <Eyebrow>Organisasi</Eyebrow>
-            <h2 className="font-bold" style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', letterSpacing: '-0.02em', color: 'var(--color-desa-text)' }}>
+            <h2 style={{ fontWeight: 800, fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', letterSpacing: '-0.03em', color: 'var(--color-desa-text)', margin: 0 }}>
               Struktur Pemerintahan Desa
             </h2>
           </div>
 
-          {/* Kepala Desa di tengah */}
-          <div className="flex justify-center mb-8">
-            <div
-              className="rounded-2xl px-8 py-5 text-center"
-              style={{ background: 'var(--color-desa-green)', color: '#fff', minWidth: '200px' }}
-            >
-              <span className="text-3xl block mb-2">👨‍💼</span>
-              <p className="font-bold text-sm">{villageStructure[0].jabatan}</p>
-              <p className="text-xs mt-1 opacity-80">{villageStructure[0].nama}</p>
+          {/* Kepala Desa */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+            <div style={{
+              background: 'var(--color-desa-green)',
+              color: '#fff',
+              borderRadius: '1.25rem',
+              padding: '1.25rem 2.5rem',
+              textAlign: 'center',
+              minWidth: 220,
+            }}>
+              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.2)', margin: '0 auto 0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="white" strokeWidth="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              </div>
+              <p style={{ fontWeight: 700, fontSize: '0.875rem', margin: 0 }}>{villageStructure[0].jabatan}</p>
+              <p style={{ fontSize: '0.8rem', opacity: 0.8, marginTop: '0.2rem' }}>{villageStructure[0].nama}</p>
             </div>
           </div>
 
           {/* Staf */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {villageStructure.slice(1).map((staf) => (
-              <div
-                key={staf.jabatan}
-                className="rounded-2xl p-5 text-center"
-                style={{ background: '#fff', border: '1px solid var(--color-desa-border)' }}
-              >
-                <span className="text-2xl block mb-2">👤</span>
-                <p className="font-semibold text-sm" style={{ color: 'var(--color-desa-text)' }}>{staf.jabatan}</p>
-                <p className="text-xs mt-1" style={{ color: 'var(--color-desa-muted)' }}>{staf.nama}</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.875rem' }}>
+            {villageStructure.slice(1).map(staf => (
+              <div key={staf.jabatan} style={{
+                background: '#fff',
+                border: '1px solid var(--color-desa-border)',
+                borderRadius: '1rem',
+                padding: '1.25rem',
+                textAlign: 'center',
+              }}>
+                <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--color-desa-surface)', margin: '0 auto 0.625rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="var(--color-desa-green)" strokeWidth="1.5"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="var(--color-desa-green)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                </div>
+                <p style={{ fontWeight: 700, fontSize: '0.825rem', color: 'var(--color-desa-text)', margin: '0 0 0.2rem' }}>{staf.jabatan}</p>
+                <p style={{ fontSize: '0.775rem', color: 'var(--color-desa-muted)', margin: 0 }}>{staf.nama}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
+
     </PageWrapper>
   );
 }

@@ -13,9 +13,9 @@ export const chatbotTree = {
     id: 'start',
     message: 'Halo! Selamat datang di Layanan Mandiri Desa Sejahtera. Ada yang bisa kami bantu?',
     options: [
-      { label: '🕐 Jam Operasional Kantor', nextId: 'jam-operasional' },
-      { label: '🎉 Jadwal Festival Desa',   nextId: 'jadwal-festival' },
-      { label: '💬 Hubungi Admin (WhatsApp)', action: 'whatsapp' },
+      { label: 'Jam Operasional Kantor', nextId: 'jam-operasional' },
+      { label: 'Jadwal Festival Desa',   nextId: 'jadwal-festival' },
+      { label: 'Hubungi Admin (WhatsApp)', action: 'whatsapp' },
     ],
   },
 
@@ -23,7 +23,7 @@ export const chatbotTree = {
     id: 'jam-operasional',
     message: 'Kantor Desa Sejahtera buka Senin – Jumat, pukul 08.00 hingga 15.00 WIB. Sabtu dan Minggu libur.',
     options: [
-      { label: '⬅️ Kembali ke Menu Utama', nextId: 'start' },
+      { label: 'Kembali ke Menu Utama', nextId: 'start' },
     ],
   },
 
@@ -31,8 +31,8 @@ export const chatbotTree = {
     id: 'jadwal-festival',
     message: 'Festival Desa Sejahtera 2026 diadakan pada 15 – 17 Agustus 2026. Ada pertunjukan seni, pameran UMKM, dan lomba tradisional!',
     options: [
-      { label: '📅 Lihat Rundown Lengkap', action: 'link-festival' },
-      { label: '⬅️ Kembali ke Menu Utama', nextId: 'start' },
+      { label: 'Lihat Rundown Lengkap', action: 'link-festival' },
+      { label: 'Kembali ke Menu Utama', nextId: 'start' },
     ],
   },
 };

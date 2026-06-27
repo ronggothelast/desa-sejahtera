@@ -1,7 +1,5 @@
 /**
- * pages/Artikel.jsx
- * Halaman Artikel & Berita: list artikel dengan filter kategori teks.
- * Data: articles.js
+ * pages/Artikel.jsx – tanpa emoji.
  */
 import { useState } from 'react';
 import PageWrapper from '../components/layout/PageWrapper';
@@ -10,52 +8,60 @@ import { articles, categories } from '../data/articles';
 
 function Eyebrow({ children }) {
   return (
-    <span
-      className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest mb-4"
-      style={{ background: 'var(--color-desa-green-dim)', color: 'var(--color-desa-green)', letterSpacing: '0.15em' }}
-    >
+    <span style={{
+      display: 'inline-block', padding: '0.25rem 0.75rem', borderRadius: '200px',
+      fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
+      background: 'var(--color-desa-green-dim)', color: 'var(--color-desa-green)', marginBottom: '1rem',
+    }}>
       {children}
     </span>
   );
 }
 
+const categoryColors = {
+  Pertanian:    '#1E5C3A',
+  Infrastruktur:'#4A6FA5',
+  Kesehatan:    '#B5451B',
+  Festival:     '#D4621A',
+};
+
 function ArticleRow({ article }) {
   const ref = useScrollReveal();
+  const color = categoryColors[article.category] || 'var(--color-desa-green)';
+
   return (
     <article
       ref={ref}
-      className="reveal flex gap-5 items-start py-7 transition-all duration-300 cursor-pointer group"
-      style={{ borderBottom: '1px solid var(--color-desa-border)' }}
+      className="reveal"
+      style={{
+        display: 'flex', gap: '1.25rem', alignItems: 'flex-start',
+        padding: '1.5rem 0',
+        borderBottom: '1px solid var(--color-desa-border)',
+        cursor: 'pointer',
+      }}
     >
-      {/* Thumbnail placeholder */}
-      <div
-        className="w-24 h-20 rounded-xl flex-shrink-0 flex items-center justify-center text-3xl transition-transform duration-300 group-hover:scale-105"
-        style={{ background: 'var(--color-desa-surface)' }}
-      >
-        🌾
-      </div>
+      {/* Color strip sebagai thumbnail */}
+      <div style={{
+        width: 80, height: 72,
+        borderRadius: '0.75rem',
+        flexShrink: 0,
+        background: `${color}12`,
+        borderLeft: `4px solid ${color}`,
+      }} />
 
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-2">
-          <span
-            className="text-xs px-2 py-0.5 rounded-full font-medium"
-            style={{ background: 'var(--color-desa-green-dim)', color: 'var(--color-desa-green)' }}
-          >
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+          <span style={{ padding: '0.15rem 0.6rem', borderRadius: '200px', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase', background: `${color}12`, color }}>
             {article.category}
           </span>
-          <span className="text-xs" style={{ color: 'var(--color-desa-muted)' }}>
+          <span style={{ fontSize: '0.75rem', color: 'var(--color-desa-muted)' }}>
             {new Date(article.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
           </span>
         </div>
-        <h3
-          className="font-bold text-base leading-snug mb-1.5 transition-colors duration-200"
-          style={{ color: 'var(--color-desa-text)' }}
-          onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-desa-green)'; }}
-          onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-desa-text)'; }}
-        >
+        <h3 style={{ fontWeight: 700, fontSize: '0.95rem', lineHeight: 1.45, marginBottom: '0.35rem', color: 'var(--color-desa-text)' }}>
           {article.title}
         </h3>
-        <p className="text-sm leading-relaxed" style={{ color: 'var(--color-desa-muted)' }}>
+        <p style={{ fontSize: '0.85rem', lineHeight: 1.65, color: 'var(--color-desa-muted)', margin: 0 }}>
           {article.excerpt}
         </p>
       </div>
@@ -73,37 +79,38 @@ export default function Artikel() {
 
   return (
     <PageWrapper>
-      {/* ── Hero ── */}
-      <section className="py-32 px-6 text-center" style={{ background: 'linear-gradient(160deg, #e8f5ef 0%, var(--color-desa-bg) 60%)' }}>
-        <div ref={heroRef} className="reveal max-w-2xl mx-auto">
+      {/* Hero */}
+      <section style={{ padding: '8rem 1.5rem 5rem', textAlign: 'center', background: '#F7F5F0', borderBottom: '1px solid var(--color-desa-border)' }}>
+        <div ref={heroRef} className="reveal" style={{ maxWidth: 560, margin: '0 auto' }}>
           <Eyebrow>Berita & Informasi</Eyebrow>
-          <h1
-            className="font-black mb-4"
-            style={{ fontSize: 'clamp(2.4rem, 6vw, 4rem)', letterSpacing: '-0.03em', color: 'var(--color-desa-text)' }}
-          >
+          <h1 style={{ fontWeight: 900, fontSize: 'clamp(2.4rem, 7vw, 4.5rem)', letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--color-desa-text)', marginBottom: '1rem' }}>
             Kabar <span style={{ color: 'var(--color-desa-green)' }}>Desa</span>
           </h1>
-          <p className="text-lg" style={{ color: 'var(--color-desa-muted)' }}>
-            Informasi terkini seputar kegiatan, pembangunan, dan kehidupan Desa Sejahtera.
+          <p style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--color-desa-muted)' }}>
+            Informasi terkini seputar kegiatan, pembangunan, dan kehidupan warga Desa Sejahtera.
           </p>
         </div>
       </section>
 
-      {/* ── Filter + List ── */}
-      <section className="py-24 px-6">
-        <div className="max-w-3xl mx-auto">
-          {/* Filter */}
-          <div className="flex flex-wrap gap-2 mb-10">
+      {/* Filter + List */}
+      <section style={{ padding: '5rem 1.5rem', background: '#fff' }}>
+        <div style={{ maxWidth: 720, margin: '0 auto' }}>
+          {/* Filter pills */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2.5rem' }}>
             {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-250 active:scale-95"
                 style={{
+                  padding: '0.4rem 1rem',
+                  borderRadius: '200px',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  border: activeCategory === cat ? 'none' : '1px solid var(--color-desa-border)',
                   background: activeCategory === cat ? 'var(--color-desa-green)' : '#fff',
                   color: activeCategory === cat ? '#fff' : 'var(--color-desa-muted)',
-                  border: activeCategory === cat ? 'none' : '1px solid var(--color-desa-border)',
-                  transition: 'all 0.25s cubic-bezier(0.32,0.72,0,1)',
+                  transition: 'all 0.22s cubic-bezier(0.32,0.72,0,1)',
                 }}
               >
                 {cat}
@@ -111,18 +118,14 @@ export default function Artikel() {
             ))}
           </div>
 
-          {/* List */}
-          <div>
-            {filtered.length === 0 ? (
-              <p className="text-center py-16" style={{ color: 'var(--color-desa-muted)' }}>
-                Tidak ada artikel di kategori ini.
-              </p>
-            ) : (
-              filtered.map(article => (
-                <ArticleRow key={article.id} article={article} />
-              ))
-            )}
-          </div>
+          {/* List artikel */}
+          {filtered.length === 0 ? (
+            <p style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--color-desa-muted)' }}>
+              Tidak ada artikel di kategori ini.
+            </p>
+          ) : (
+            filtered.map(article => <ArticleRow key={article.id} article={article} />)
+          )}
         </div>
       </section>
     </PageWrapper>

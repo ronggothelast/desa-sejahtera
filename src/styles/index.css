@@ -2,42 +2,41 @@
 
 /* ─── Design Tokens ─────────────────────────────────────── */
 @theme {
-  /* Font */
   --font-sans: "DM Sans", system-ui, sans-serif;
 
-  /* Colors – Web Desa (Earth Tones) */
-  --color-desa-bg:        #FAFAF8;
-  --color-desa-surface:   #F2F0EB;
-  --color-desa-border:    rgba(0, 0, 0, 0.08);
-  --color-desa-text:      #1C1C1A;
-  --color-desa-muted:     #6B6B66;
-  --color-desa-green:     #2D6A4F;
-  --color-desa-green-dim: rgba(45, 106, 79, 0.08);
+  /* Web Desa – Earth Tones */
+  --color-desa-bg:        #F7F5F0;
+  --color-desa-surface:   #EDEAE2;
+  --color-desa-border:    rgba(0, 0, 0, 0.07);
+  --color-desa-text:      #1A1A18;
+  --color-desa-muted:     #6A6A63;
+  --color-desa-green:     #1E5C3A;
+  --color-desa-green-mid: #2D7A50;
+  --color-desa-green-dim: rgba(30, 92, 58, 0.08);
   --color-desa-brown:     #7C5C3E;
+  --color-desa-warm:      #C8874A;
 
-  /* Colors – Festival */
-  --color-fest-bg:        #0F0A04;
-  --color-fest-surface:   rgba(255, 255, 255, 0.04);
-  --color-fest-border:    rgba(255, 255, 255, 0.08);
-  --color-fest-yellow:    #E8C547;
+  /* Festival – Colourful & Bright */
+  --color-fest-bg:        #FFFBF2;
+  --color-fest-surface:   #FFF3D6;
+  --color-fest-border:    rgba(0, 0, 0, 0.08);
+  --color-fest-yellow:    #E8A800;
+  --color-fest-yellow-lt: #FFF0B3;
   --color-fest-red:       #C0392B;
-  --color-fest-orange:    #E07B39;
-  --color-fest-text:      #F5F0E8;
+  --color-fest-red-lt:    #FDECEA;
+  --color-fest-orange:    #D4621A;
+  --color-fest-orange-lt: #FDEEE3;
+  --color-fest-teal:      #0B7A6E;
+  --color-fest-text:      #1A1208;
+  --color-fest-muted:     #5C4A2A;
 
   /* Easing */
   --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* Radius */
-  --radius-card:  1.5rem;
-  --radius-pill:  200px;
-  --radius-inner: calc(1.5rem - 0.375rem);
 }
 
 /* ─── Base ───────────────────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 html {
   font-family: var(--font-sans);
@@ -54,25 +53,17 @@ body {
 /* ─── Scroll Reveal ──────────────────────────────────────── */
 .reveal {
   opacity: 0;
-  transform: translateY(32px);
+  transform: translateY(28px);
   transition:
-    opacity 0.9s var(--ease-out),
-    transform 0.9s var(--ease-out);
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ─── Film Grain (fixed, non-interactive) ────────────────── */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 128px 128px;
-}
+/* ─── Stagger delays untuk grid ─────────────────────────── */
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 160ms; }
+.reveal-delay-3 { transition-delay: 240ms; }

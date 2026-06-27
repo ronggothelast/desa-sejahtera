@@ -1,31 +1,23 @@
 /**
- * components/common/ChatbotWidget.jsx
- * Floating chatbot button + decision tree popup.
- * Data: dari data/chatbot.js
- * Logic: rule-based, tanpa input teks bebas.
- * Props: none
+ * components/common/ChatbotWidget.jsx – tanpa emoji.
  */
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { chatbotTree, chatbotActions } from '../../data/chatbot';
 
 export default function ChatbotWidget() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen]               = useState(false);
   const [currentNodeId, setCurrentNodeId] = useState('start');
-  const [history, setHistory] = useState([]);
-  const bottomRef = useRef(null);
-  const navigate = useNavigate();
+  const [history, setHistory]         = useState([]);
+  const bottomRef                     = useRef(null);
+  const navigate                      = useNavigate();
 
   const currentNode = chatbotTree[currentNodeId];
 
-  // Auto-scroll ke bawah saat pesan baru masuk
   useEffect(() => {
-    if (open) {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (open) bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history, open]);
 
-  // Reset saat dibuka ulang
   const handleToggle = () => {
     if (!open) {
       setCurrentNodeId('start');
@@ -35,24 +27,16 @@ export default function ChatbotWidget() {
   };
 
   const handleOption = (option) => {
-    // Tambah pilihan user ke history
-    const newHistory = [
-      ...history,
-      { type: 'user', text: option.label },
-    ];
+    const newHistory = [...history, { type: 'user', text: option.label }];
 
     if (option.action) {
       const actionUrl = chatbotActions[option.action];
       if (option.action === 'whatsapp') {
         window.open(actionUrl, '_blank', 'noreferrer');
-        setHistory([...newHistory, { type: 'bot', text: 'Mengarahkan ke WhatsApp...' }]);
+        setHistory([...newHistory, { type: 'bot', text: 'Mengarahkan ke WhatsApp panitia...' }]);
       } else if (option.action.startsWith('link-')) {
-        newHistory.push({ type: 'bot', text: 'Membuka halaman...' });
-        setHistory(newHistory);
-        setTimeout(() => {
-          setOpen(false);
-          navigate(actionUrl);
-        }, 600);
+        setHistory([...newHistory, { type: 'bot', text: 'Membuka halaman...' }]);
+        setTimeout(() => { setOpen(false); navigate(actionUrl); }, 600);
       }
       return;
     }
@@ -66,75 +50,80 @@ export default function ChatbotWidget() {
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating button */}
       <button
         onClick={handleToggle}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 active:scale-95"
+        aria-label={open ? 'Tutup chat' : 'Buka chat layanan desa'}
         style={{
+          position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 50,
+          width: 52, height: 52,
+          borderRadius: '50%',
+          border: 'none', cursor: 'pointer',
           background: 'var(--color-desa-green)',
-          boxShadow: '0 8px 32px rgba(45,106,79,0.35)',
-          transform: open ? 'scale(0.9)' : 'scale(1)',
-          transition: 'transform 0.3s cubic-bezier(0.32,0.72,0,1), box-shadow 0.3s ease',
+          color: '#fff',
+          boxShadow: '0 6px 24px rgba(30,92,58,0.35)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          transform: open ? 'scale(0.92)' : 'scale(1)',
+          transition: 'transform 0.3s cubic-bezier(0.32,0.72,0,1)',
         }}
-        aria-label={open ? 'Tutup chat' : 'Buka chat'}
       >
-        <span className="text-2xl">{open ? '✕' : '💬'}</span>
+        {open ? (
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M2 2l12 12M14 2L2 14" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+        ) : (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        )}
       </button>
 
-      {/* Chat Popup */}
+      {/* Popup */}
       <div
-        className="fixed bottom-24 right-6 z-50 w-80 rounded-2xl overflow-hidden"
-        style={{
-          background: '#fff',
-          boxShadow: '0 16px 64px rgba(0,0,0,0.15)',
-          border: '1px solid rgba(0,0,0,0.06)',
-          opacity: open ? 1 : 0,
-          transform: open ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.95)',
-          pointerEvents: open ? 'auto' : 'none',
-          transition: 'all 0.35s cubic-bezier(0.32,0.72,0,1)',
-          transformOrigin: 'bottom right',
-        }}
         role="dialog"
-        aria-label="Chat Layanan Desa"
+        aria-label="Chat Layanan Desa Sejahtera"
+        style={{
+          position: 'fixed', bottom: '5.5rem', right: '1.5rem', zIndex: 50,
+          width: 320,
+          background: '#fff',
+          borderRadius: '1.25rem',
+          border: '1px solid rgba(0,0,0,0.07)',
+          boxShadow: '0 16px 56px rgba(0,0,0,0.13)',
+          opacity: open ? 1 : 0,
+          transform: open ? 'translateY(0) scale(1)' : 'translateY(12px) scale(0.96)',
+          pointerEvents: open ? 'auto' : 'none',
+          transition: 'all 0.3s cubic-bezier(0.32,0.72,0,1)',
+          transformOrigin: 'bottom right',
+          overflow: 'hidden',
+        }}
       >
         {/* Header */}
-        <div
-          className="px-4 py-3 flex items-center gap-3"
-          style={{ background: 'var(--color-desa-green)' }}
-        >
-          <span className="text-2xl">🌿</span>
+        <div style={{ background: 'var(--color-desa-green)', padding: '0.875rem 1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="1.5"/>
+              <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="white" strokeWidth="1.5"/>
+            </svg>
+          </div>
           <div>
-            <p className="text-white font-semibold text-sm leading-tight">Layanan Mandiri</p>
-            <p className="text-white/70 text-xs">Desa Sejahtera</p>
+            <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.875rem', lineHeight: 1.2, margin: 0 }}>Layanan Mandiri</p>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.75rem', margin: '0.1rem 0 0' }}>Desa Sejahtera</p>
           </div>
         </div>
 
-        {/* Pesan */}
-        <div
-          className="p-4 flex flex-col gap-3 overflow-y-auto"
-          style={{ maxHeight: '260px' }}
-        >
+        {/* Riwayat chat */}
+        <div style={{ padding: '0.875rem', display: 'flex', flexDirection: 'column', gap: '0.625rem', maxHeight: 240, overflowY: 'auto' }}>
           {history.map((msg, i) => (
-            <div
-              key={i}
-              className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
-              <div
-                className="max-w-[85%] px-3 py-2 rounded-2xl text-sm leading-relaxed"
-                style={
-                  msg.type === 'user'
-                    ? {
-                        background: 'var(--color-desa-green)',
-                        color: '#fff',
-                        borderBottomRightRadius: '4px',
-                      }
-                    : {
-                        background: 'var(--color-desa-surface)',
-                        color: 'var(--color-desa-text)',
-                        borderBottomLeftRadius: '4px',
-                      }
-                }
-              >
+            <div key={i} style={{ display: 'flex', justifyContent: msg.type === 'user' ? 'flex-end' : 'flex-start' }}>
+              <div style={{
+                maxWidth: '85%',
+                padding: '0.5rem 0.75rem',
+                borderRadius: msg.type === 'user' ? '1rem 1rem 0.25rem 1rem' : '1rem 1rem 1rem 0.25rem',
+                fontSize: '0.85rem',
+                lineHeight: 1.55,
+                background: msg.type === 'user' ? 'var(--color-desa-green)' : 'var(--color-desa-surface)',
+                color: msg.type === 'user' ? '#fff' : 'var(--color-desa-text)',
+              }}>
                 {msg.text}
               </div>
             </div>
@@ -142,18 +131,27 @@ export default function ChatbotWidget() {
           <div ref={bottomRef} />
         </div>
 
-        {/* Tombol Pilihan */}
-        <div className="px-4 pb-4 flex flex-col gap-2">
+        {/* Tombol pilihan */}
+        <div style={{ padding: '0 0.875rem 0.875rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
           {currentNode?.options.map((option, i) => (
             <button
               key={i}
               onClick={() => handleOption(option)}
-              className="w-full text-left px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:opacity-80 active:scale-98"
               style={{
+                width: '100%',
+                textAlign: 'left',
+                padding: '0.5rem 0.75rem',
+                borderRadius: '0.625rem',
+                fontSize: '0.85rem',
+                fontWeight: 500,
                 border: '1.5px solid var(--color-desa-green)',
                 color: 'var(--color-desa-green)',
                 background: 'transparent',
+                cursor: 'pointer',
+                transition: 'all 0.18s',
               }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-desa-green-dim)'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
             >
               {option.label}
             </button>

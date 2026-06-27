@@ -1,7 +1,5 @@
 /**
- * pages/Kontak.jsx
- * Halaman Kontak: Google Maps embed, media sosial, tombol WhatsApp.
- * Data: village.js
+ * pages/Kontak.jsx – tanpa emoji.
  */
 import PageWrapper from '../components/layout/PageWrapper';
 import { useScrollReveal } from '../hooks/useScrollReveal';
@@ -9,155 +7,121 @@ import { villageProfile } from '../data/village';
 
 function Eyebrow({ children }) {
   return (
-    <span
-      className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest mb-4"
-      style={{ background: 'var(--color-desa-green-dim)', color: 'var(--color-desa-green)', letterSpacing: '0.15em' }}
-    >
+    <span style={{
+      display: 'inline-block', padding: '0.25rem 0.75rem', borderRadius: '200px',
+      fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
+      background: 'var(--color-desa-green-dim)', color: 'var(--color-desa-green)', marginBottom: '1rem',
+    }}>
       {children}
     </span>
   );
 }
 
+function InfoCard({ title, children }) {
+  return (
+    <div style={{ background: '#fff', border: '1px solid var(--color-desa-border)', borderRadius: '1.25rem', padding: '1.5rem' }}>
+      <h3 style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--color-desa-text)', marginBottom: '0.75rem' }}>{title}</h3>
+      {children}
+    </div>
+  );
+}
+
 export default function Kontak() {
-  const heroRef = useScrollReveal({ threshold: 0.05 });
+  const heroRef    = useScrollReveal({ threshold: 0.05 });
   const contactRef = useScrollReveal();
-  const mapRef = useScrollReveal();
+  const mapRef     = useScrollReveal();
 
   return (
     <PageWrapper>
-      {/* ── Hero ── */}
-      <section className="py-32 px-6 text-center" style={{ background: 'linear-gradient(160deg, #e8f5ef 0%, var(--color-desa-bg) 60%)' }}>
-        <div ref={heroRef} className="reveal max-w-2xl mx-auto">
+      {/* Hero */}
+      <section style={{ padding: '8rem 1.5rem 5rem', textAlign: 'center', background: '#F7F5F0', borderBottom: '1px solid var(--color-desa-border)' }}>
+        <div ref={heroRef} className="reveal" style={{ maxWidth: 560, margin: '0 auto' }}>
           <Eyebrow>Hubungi Kami</Eyebrow>
-          <h1
-            className="font-black mb-4"
-            style={{ fontSize: 'clamp(2.4rem, 6vw, 4rem)', letterSpacing: '-0.03em', color: 'var(--color-desa-text)' }}
-          >
-            Kami Siap <span style={{ color: 'var(--color-desa-green)' }}>Membantu</span>
+          <h1 style={{ fontWeight: 900, fontSize: 'clamp(2.4rem, 6vw, 4rem)', letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--color-desa-text)', marginBottom: '1rem' }}>
+            Ada yang bisa<br /><span style={{ color: 'var(--color-desa-green)' }}>kami bantu?</span>
           </h1>
-          <p className="text-lg leading-relaxed" style={{ color: 'var(--color-desa-muted)' }}>
-            Ada pertanyaan atau keperluan administrasi? Hubungi kami lewat salah satu kanal di bawah.
+          <p style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--color-desa-muted)' }}>
+            Hubungi kami lewat salah satu kanal di bawah untuk pertanyaan atau keperluan administrasi desa.
           </p>
         </div>
       </section>
 
-      {/* ── Info + Map ── */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-          {/* Info Kontak */}
-          <div ref={contactRef} className="reveal flex flex-col gap-6">
-            {/* Jam Operasional */}
-            <div
-              className="rounded-2xl p-6"
-              style={{ background: '#fff', border: '1px solid var(--color-desa-border)' }}
-            >
-              <h3 className="font-bold mb-4" style={{ color: 'var(--color-desa-text)' }}>
-                🕐 Jam Operasional
-              </h3>
-              <p className="text-sm leading-loose" style={{ color: 'var(--color-desa-muted)' }}>
-                Senin – Jumat<br />
-                <strong style={{ color: 'var(--color-desa-text)' }}>08.00 – 15.00 WIB</strong>
-              </p>
-              <p className="text-sm mt-2" style={{ color: 'var(--color-desa-muted)' }}>
-                Sabtu & Minggu: Libur
-              </p>
-            </div>
+      {/* Info + Map */}
+      <section style={{ padding: '5rem 1.5rem', background: '#fff' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', alignItems: 'start' }}>
 
-            {/* Alamat */}
-            <div
-              className="rounded-2xl p-6"
-              style={{ background: '#fff', border: '1px solid var(--color-desa-border)' }}
-            >
-              <h3 className="font-bold mb-4" style={{ color: 'var(--color-desa-text)' }}>
-                📍 Alamat
-              </h3>
-              <p className="text-sm leading-loose" style={{ color: 'var(--color-desa-muted)' }}>
+          {/* Kiri: Info kontak */}
+          <div ref={contactRef} className="reveal" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <InfoCard title="Jam Operasional">
+              <p style={{ fontSize: '0.875rem', lineHeight: 1.75, color: 'var(--color-desa-muted)', margin: 0 }}>
+                Senin – Jumat<br />
+                <strong style={{ color: 'var(--color-desa-text)' }}>08.00 – 15.00 WIB</strong><br />
+                Sabtu & Minggu tutup
+              </p>
+            </InfoCard>
+
+            <InfoCard title="Alamat Kantor">
+              <p style={{ fontSize: '0.875rem', lineHeight: 1.75, color: 'var(--color-desa-muted)', margin: 0 }}>
                 Jl. Raya Sejahtera No. 1<br />
                 {villageProfile.kecamatan}<br />
                 {villageProfile.kabupaten}, {villageProfile.provinsi} {villageProfile.kodePos}
               </p>
-            </div>
+            </InfoCard>
 
             {/* WhatsApp */}
             <a
               href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20bertanya%20tentang%20Desa%20Sejahtera."
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-between px-6 py-4 rounded-2xl font-semibold transition-all duration-300 hover:opacity-90 active:scale-95"
               style={{
-                background: '#25D366',
-                color: '#fff',
-                boxShadow: '0 4px 20px rgba(37,211,102,0.3)',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '1.25rem 1.5rem',
+                borderRadius: '1.25rem',
+                background: '#25D366', color: '#fff',
+                textDecoration: 'none',
+                fontWeight: 700, fontSize: '0.9rem',
+                boxShadow: '0 4px 16px rgba(37,211,102,0.28)',
+                transition: 'opacity 0.2s',
               }}
+              onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; }}
+              onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
             >
-              <span className="flex items-center gap-3">
-                <span className="text-2xl">💬</span>
-                Hubungi via WhatsApp
-              </span>
-              <span
-                className="w-8 h-8 rounded-full flex items-center justify-center"
-                style={{ background: 'rgba(255,255,255,0.2)' }}
-              >
-                →
-              </span>
+              Hubungi via WhatsApp
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
 
-            {/* Media Sosial */}
-            <div
-              className="rounded-2xl p-6"
-              style={{ background: '#fff', border: '1px solid var(--color-desa-border)' }}
-            >
-              <h3 className="font-bold mb-4" style={{ color: 'var(--color-desa-text)' }}>
-                📱 Media Sosial
-              </h3>
-              <div className="flex flex-col gap-3">
+            <InfoCard title="Media Sosial">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                 {[
-                  { icon: '📸', platform: 'Instagram', handle: '@desasejahtera', url: '#' },
-                  { icon: '▶️', platform: 'YouTube', handle: 'Desa Sejahtera Official', url: '#' },
-                  { icon: '📘', platform: 'Facebook', handle: 'Desa Sejahtera', url: '#' },
+                  { platform: 'Instagram', handle: '@desasejahtera', url: '#' },
+                  { platform: 'YouTube', handle: 'Desa Sejahtera Official', url: '#' },
+                  { platform: 'Facebook', handle: 'Desa Sejahtera', url: '#' },
                 ].map(s => (
-                  <a
-                    key={s.platform}
-                    href={s.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-3 text-sm transition-all duration-200 hover:gap-4"
-                    style={{ color: 'var(--color-desa-muted)' }}
+                  <a key={s.platform} href={s.url} target="_blank" rel="noreferrer"
+                    style={{ fontSize: '0.875rem', textDecoration: 'none', color: 'var(--color-desa-muted)', transition: 'color 0.2s' }}
+                    onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-desa-green)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-desa-muted)'; }}
                   >
-                    <span className="text-lg">{s.icon}</span>
-                    <span><strong style={{ color: 'var(--color-desa-text)' }}>{s.platform}</strong> · {s.handle}</span>
+                    <strong style={{ color: 'var(--color-desa-text)' }}>{s.platform}</strong> · {s.handle}
                   </a>
                 ))}
               </div>
-            </div>
+            </InfoCard>
           </div>
 
-          {/* Google Maps Embed */}
+          {/* Kanan: Map */}
           <div ref={mapRef} className="reveal">
-            <div
-              className="rounded-2xl overflow-hidden"
-              style={{
-                border: '1px solid var(--color-desa-border)',
-                aspectRatio: '4/3',
-                background: 'var(--color-desa-surface)',
-              }}
-            >
-              {/*
-                Ganti src di bawah dengan embed URL Google Maps lokasi kantor desa yang sebenarnya.
-                Format: https://maps.google.com/maps?q=LAT,LNG&output=embed
-              */}
+            <div style={{ borderRadius: '1.5rem', overflow: 'hidden', border: '1px solid var(--color-desa-border)', aspectRatio: '4/3' }}>
               <iframe
                 src="https://maps.google.com/maps?q=-7.7956,110.3695&z=15&output=embed"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
+                width="100%" height="100%"
+                style={{ border: 0, display: 'block' }}
+                allowFullScreen loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Lokasi Kantor Desa Sejahtera"
               />
             </div>
-            <p className="text-xs mt-3 text-center" style={{ color: 'var(--color-desa-muted)' }}>
+            <p style={{ fontSize: '0.75rem', textAlign: 'center', marginTop: '0.75rem', color: 'var(--color-desa-muted)' }}>
               Klik peta untuk membuka di Google Maps
             </p>
           </div>

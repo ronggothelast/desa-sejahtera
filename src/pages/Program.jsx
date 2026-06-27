@@ -1,7 +1,5 @@
 /**
- * pages/Program.jsx
- * Halaman Program Desa: grid program dengan filter kategori.
- * Data: programs.js
+ * pages/Program.jsx – tanpa emoji di program card.
  */
 import { useState } from 'react';
 import PageWrapper from '../components/layout/PageWrapper';
@@ -10,71 +8,62 @@ import { programs, programCategories } from '../data/programs';
 
 function Eyebrow({ children }) {
   return (
-    <span
-      className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest mb-4"
-      style={{ background: 'var(--color-desa-green-dim)', color: 'var(--color-desa-green)', letterSpacing: '0.15em' }}
-    >
+    <span style={{
+      display: 'inline-block', padding: '0.25rem 0.75rem', borderRadius: '200px',
+      fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
+      background: 'var(--color-desa-green-dim)', color: 'var(--color-desa-green)', marginBottom: '1rem',
+    }}>
       {children}
     </span>
   );
 }
 
+const categoryColors = {
+  Ekonomi:       { main: '#1E5C3A', bg: 'rgba(30,92,58,0.07)' },
+  Infrastruktur: { main: '#4A6FA5', bg: 'rgba(74,111,165,0.07)' },
+  Sosial:        { main: '#B5451B', bg: 'rgba(181,69,27,0.07)' },
+};
+
 function ProgramCard({ program }) {
   const ref = useScrollReveal();
+  const c = categoryColors[program.category] || { main: 'var(--color-desa-green)', bg: 'var(--color-desa-green-dim)' };
+
   return (
     <div
       ref={ref}
-      className="reveal rounded-[1.25rem] p-6 transition-all duration-400"
+      className="reveal"
       style={{
         background: '#fff',
         border: '1px solid var(--color-desa-border)',
-        boxShadow: '0 2px 20px rgba(0,0,0,0.04)',
+        borderTop: `3px solid ${c.main}`,
+        borderRadius: '1.25rem',
+        padding: '1.5rem',
+        transition: 'box-shadow 0.3s cubic-bezier(0.32,0.72,0,1), transform 0.3s cubic-bezier(0.32,0.72,0,1)',
       }}
-      onMouseEnter={e => {
-        e.currentTarget.style.boxShadow = '0 8px 40px rgba(0,0,0,0.09)';
-        e.currentTarget.style.transform = 'translateY(-3px)';
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.boxShadow = '0 2px 20px rgba(0,0,0,0.04)';
-        e.currentTarget.style.transform = 'translateY(0)';
-      }}
+      onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.08)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+      onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateY(0)'; }}
     >
-      <div className="flex items-start gap-4">
-        <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
-          style={{ background: 'var(--color-desa-surface)' }}
-        >
-          {program.icon}
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap mb-2">
-            <span
-              className="text-xs px-2 py-0.5 rounded-full font-medium"
-              style={{ background: 'var(--color-desa-green-dim)', color: 'var(--color-desa-green)' }}
-            >
-              {program.category}
-            </span>
-            <span
-              className="text-xs px-2 py-0.5 rounded-full font-medium"
-              style={{
-                background: program.status === 'Aktif' ? '#e8f5ef' : '#fff8e6',
-                color: program.status === 'Aktif' ? '#2D6A4F' : '#b07d20',
-              }}
-            >
-              {program.status}
-            </span>
-          </div>
-          <h3 className="font-bold text-base leading-snug" style={{ color: 'var(--color-desa-text)' }}>
-            {program.title}
-          </h3>
-          <p className="text-sm mt-2 leading-relaxed" style={{ color: 'var(--color-desa-muted)' }}>
-            {program.description}
-          </p>
-          <p className="text-xs mt-3" style={{ color: 'var(--color-desa-muted)' }}>
-            Sejak {program.year}
-          </p>
-        </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.875rem', flexWrap: 'wrap' }}>
+        <span style={{ padding: '0.2rem 0.6rem', borderRadius: '200px', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase', background: c.bg, color: c.main }}>
+          {program.category}
+        </span>
+        <span style={{
+          padding: '0.2rem 0.6rem', borderRadius: '200px', fontSize: '0.7rem', fontWeight: 600,
+          background: program.status === 'Aktif' ? '#e6f4ed' : '#fff8e6',
+          color: program.status === 'Aktif' ? '#1E5C3A' : '#a06820',
+        }}>
+          {program.status}
+        </span>
       </div>
+      <h3 style={{ fontWeight: 700, fontSize: '1rem', lineHeight: 1.4, color: 'var(--color-desa-text)', marginBottom: '0.625rem' }}>
+        {program.title}
+      </h3>
+      <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: 'var(--color-desa-muted)', margin: '0 0 0.75rem' }}>
+        {program.description}
+      </p>
+      <p style={{ fontSize: '0.775rem', color: 'var(--color-desa-muted)', margin: 0 }}>
+        Sejak {program.year}
+      </p>
     </div>
   );
 }
@@ -89,37 +78,33 @@ export default function Program() {
 
   return (
     <PageWrapper>
-      {/* ── Hero ── */}
-      <section className="py-32 px-6 text-center" style={{ background: 'linear-gradient(160deg, #e8f5ef 0%, var(--color-desa-bg) 60%)' }}>
-        <div ref={heroRef} className="reveal max-w-2xl mx-auto">
+      {/* Hero */}
+      <section style={{ padding: '8rem 1.5rem 5rem', textAlign: 'center', background: '#F7F5F0', borderBottom: '1px solid var(--color-desa-border)' }}>
+        <div ref={heroRef} className="reveal" style={{ maxWidth: 560, margin: '0 auto' }}>
           <Eyebrow>Program Desa</Eyebrow>
-          <h1
-            className="font-black mb-4"
-            style={{ fontSize: 'clamp(2.4rem, 6vw, 4rem)', letterSpacing: '-0.03em', color: 'var(--color-desa-text)' }}
-          >
-            Membangun Desa <span style={{ color: 'var(--color-desa-green)' }}>Bersama</span>
+          <h1 style={{ fontWeight: 900, fontSize: 'clamp(2.4rem, 7vw, 4.5rem)', letterSpacing: '-0.04em', lineHeight: 1.05, color: 'var(--color-desa-text)', marginBottom: '1rem' }}>
+            Membangun<br /><span style={{ color: 'var(--color-desa-green)' }}>Bersama</span>
           </h1>
-          <p className="text-lg leading-relaxed" style={{ color: 'var(--color-desa-muted)' }}>
-            Program-program yang sedang berjalan untuk meningkatkan kesejahteraan warga di berbagai bidang.
+          <p style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--color-desa-muted)' }}>
+            Program-program aktif untuk meningkatkan kesejahteraan warga di berbagai bidang.
           </p>
         </div>
       </section>
 
-      {/* ── Filter + Grid ── */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto">
-          {/* Filter Kategori */}
-          <div className="flex flex-wrap gap-2 mb-12">
+      {/* Filter + Grid */}
+      <section style={{ padding: '5rem 1.5rem', background: '#fff' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          {/* Filter */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2.5rem' }}>
             {programCategories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-250 active:scale-95"
+              <button key={cat} onClick={() => setActiveCategory(cat)}
                 style={{
+                  padding: '0.4rem 1rem', borderRadius: '200px',
+                  fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer',
+                  border: activeCategory === cat ? 'none' : '1px solid var(--color-desa-border)',
                   background: activeCategory === cat ? 'var(--color-desa-green)' : '#fff',
                   color: activeCategory === cat ? '#fff' : 'var(--color-desa-muted)',
-                  border: activeCategory === cat ? 'none' : '1px solid var(--color-desa-border)',
-                  transition: 'all 0.25s cubic-bezier(0.32,0.72,0,1)',
+                  transition: 'all 0.22s cubic-bezier(0.32,0.72,0,1)',
                 }}
               >
                 {cat}
@@ -127,10 +112,8 @@ export default function Program() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {filtered.map(program => (
-              <ProgramCard key={program.id} program={program} />
-            ))}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
+            {filtered.map(program => <ProgramCard key={program.id} program={program} />)}
           </div>
         </div>
       </section>

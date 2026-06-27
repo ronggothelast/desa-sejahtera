@@ -1,8 +1,5 @@
 /**
- * pages/Home.jsx
- * Halaman Beranda Desa Sejahtera.
- * Sections: Hero, Sambutan Kades, Shortcut Festival, 3 Artikel Terbaru.
- * Data: village.js, articles.js
+ * pages/Home.jsx – tanpa emoji, design diperbaiki.
  */
 import { Link } from 'react-router-dom';
 import PageWrapper from '../components/layout/PageWrapper';
@@ -10,15 +7,20 @@ import { useScrollReveal } from '../hooks/useScrollReveal';
 import { villageProfile } from '../data/village';
 import { articles } from '../data/articles';
 
-// Eyebrow pill badge
-function Eyebrow({ children }) {
+function Eyebrow({ children, color }) {
   return (
     <span
-      className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest mb-4"
       style={{
-        background: 'var(--color-desa-green-dim)',
-        color: 'var(--color-desa-green)',
-        letterSpacing: '0.15em',
+        display: 'inline-block',
+        padding: '0.25rem 0.75rem',
+        borderRadius: '200px',
+        fontSize: '0.7rem',
+        fontWeight: 700,
+        letterSpacing: '0.14em',
+        textTransform: 'uppercase',
+        background: color ? `${color}18` : 'var(--color-desa-green-dim)',
+        color: color || 'var(--color-desa-green)',
+        marginBottom: '1rem',
       }}
     >
       {children}
@@ -26,281 +28,383 @@ function Eyebrow({ children }) {
   );
 }
 
-function ArticleCard({ article }) {
+function ArticleCard({ article, delay = 0 }) {
   const ref = useScrollReveal();
+  const categoryColors = {
+    Pertanian: '#1E5C3A',
+    Infrastruktur: '#4A6FA5',
+    Kesehatan: '#B5451B',
+    Festival: '#D4621A',
+  };
+  const color = categoryColors[article.category] || 'var(--color-desa-green)';
+
   return (
     <article
       ref={ref}
-      className="reveal group rounded-[1.25rem] overflow-hidden cursor-pointer"
+      className={`reveal reveal-delay-${delay}`}
       style={{
         background: '#fff',
+        borderRadius: '1.25rem',
+        overflow: 'hidden',
         border: '1px solid var(--color-desa-border)',
-        boxShadow: '0 2px 24px rgba(0,0,0,0.05)',
-        transition: 'box-shadow 0.4s cubic-bezier(0.32,0.72,0,1), transform 0.4s cubic-bezier(0.32,0.72,0,1)',
+        transition: 'box-shadow 0.35s cubic-bezier(0.32,0.72,0,1), transform 0.35s cubic-bezier(0.32,0.72,0,1)',
+        cursor: 'pointer',
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.boxShadow = '0 8px 40px rgba(0,0,0,0.10)';
-        e.currentTarget.style.transform = 'translateY(-3px)';
+        e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.10)';
+        e.currentTarget.style.transform = 'translateY(-4px)';
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.boxShadow = '0 2px 24px rgba(0,0,0,0.05)';
+        e.currentTarget.style.boxShadow = 'none';
         e.currentTarget.style.transform = 'translateY(0)';
       }}
     >
-      {/* Placeholder image area */}
-      <div
-        className="h-44 w-full flex items-center justify-center text-4xl"
-        style={{ background: 'var(--color-desa-surface)' }}
-      >
-        🌾
-      </div>
-      <div className="p-5">
+      {/* Color bar atas sebagai pengganti gambar placeholder */}
+      <div style={{ height: 6, background: color }} />
+      <div style={{ padding: '1.25rem' }}>
         <span
-          className="inline-block px-2 py-0.5 rounded-full text-xs font-medium mb-3"
           style={{
-            background: 'var(--color-desa-green-dim)',
-            color: 'var(--color-desa-green)',
+            display: 'inline-block',
+            padding: '0.2rem 0.6rem',
+            borderRadius: '200px',
+            fontSize: '0.7rem',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            background: `${color}12`,
+            color,
+            marginBottom: '0.75rem',
           }}
         >
           {article.category}
         </span>
         <h3
-          className="font-bold text-base leading-snug mb-2"
-          style={{ color: 'var(--color-desa-text)' }}
+          style={{
+            fontWeight: 700,
+            fontSize: '0.95rem',
+            lineHeight: 1.45,
+            marginBottom: '0.5rem',
+            color: 'var(--color-desa-text)',
+          }}
         >
           {article.title}
         </h3>
-        <p className="text-sm leading-relaxed" style={{ color: 'var(--color-desa-muted)' }}>
+        <p style={{ fontSize: '0.85rem', lineHeight: 1.7, color: 'var(--color-desa-muted)' }}>
           {article.excerpt}
         </p>
-        <p className="text-xs mt-3" style={{ color: 'var(--color-desa-muted)' }}>
-          {new Date(article.date).toLocaleDateString('id-ID', {
-            day: 'numeric', month: 'long', year: 'numeric',
-          })}
+        <p style={{ fontSize: '0.75rem', marginTop: '0.75rem', color: 'var(--color-desa-muted)' }}>
+          {new Date(article.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
         </p>
       </div>
     </article>
   );
 }
 
+// Stat tile untuk hero
+function StatTile({ value, label }) {
+  return (
+    <div
+      style={{
+        background: 'rgba(255,255,255,0.7)',
+        border: '1px solid rgba(0,0,0,0.06)',
+        borderRadius: '1rem',
+        padding: '1rem 1.25rem',
+        textAlign: 'center',
+      }}
+    >
+      <p style={{ fontWeight: 800, fontSize: '1.4rem', color: 'var(--color-desa-green)', letterSpacing: '-0.03em', lineHeight: 1 }}>
+        {value}
+      </p>
+      <p style={{ fontSize: '0.72rem', color: 'var(--color-desa-muted)', marginTop: '0.25rem', letterSpacing: '0.04em' }}>
+        {label}
+      </p>
+    </div>
+  );
+}
+
 export default function Home() {
-  const heroRef = useScrollReveal({ threshold: 0.05 });
-  const greetingRef = useScrollReveal();
-  const festivalRef = useScrollReveal();
+  const heroRef         = useScrollReveal({ threshold: 0.05 });
+  const greetingRef     = useScrollReveal();
+  const festivalRef     = useScrollReveal();
   const articlesHeadRef = useScrollReveal();
 
   const latestArticles = articles.slice(0, 3);
 
   return (
     <PageWrapper>
-      {/* ── Hero ───────────────────────────────────────────────── */}
+
+      {/* ── HERO ──────────────────────────────────────────────── */}
       <section
-        className="relative flex items-center justify-center text-center px-6"
         style={{
-          minHeight: '90dvh',
-          background: 'linear-gradient(160deg, #e8f5ef 0%, var(--color-desa-bg) 60%)',
+          minHeight: '92dvh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '6rem 1.5rem 4rem',
+          position: 'relative',
+          overflow: 'hidden',
+          background: '#F7F5F0',
         }}
       >
-        {/* Dekoratif lingkaran blur */}
-        <div
-          className="absolute top-20 left-1/4 w-72 h-72 rounded-full pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle, rgba(45,106,79,0.12) 0%, transparent 70%)',
-            filter: 'blur(40px)',
-          }}
-        />
+        {/* Garis dekoratif kiri */}
+        <div style={{
+          position: 'absolute', left: 0, top: '15%', bottom: '15%',
+          width: 4, background: 'var(--color-desa-green)', borderRadius: '0 4px 4px 0',
+        }} />
 
-        <div ref={heroRef} className="reveal relative max-w-3xl mx-auto">
-          <Eyebrow>Portal Resmi</Eyebrow>
+        <div ref={heroRef} className="reveal" style={{ maxWidth: 700, width: '100%', textAlign: 'center' }}>
+          <Eyebrow>Portal Resmi Desa</Eyebrow>
+
           <h1
-            className="font-black leading-[1.1] mb-6"
             style={{
-              fontSize: 'clamp(2.8rem, 8vw, 5.5rem)',
+              fontWeight: 900,
+              fontSize: 'clamp(3rem, 9vw, 6rem)',
+              letterSpacing: '-0.04em',
+              lineHeight: 1.0,
               color: 'var(--color-desa-text)',
-              letterSpacing: '-0.03em',
+              marginBottom: '0.5rem',
             }}
           >
-            Desa{' '}
-            <span style={{ color: 'var(--color-desa-green)' }}>Sejahtera</span>
+            Desa
           </h1>
-          <p
-            className="text-lg leading-relaxed mb-10 max-w-xl mx-auto"
-            style={{ color: 'var(--color-desa-muted)' }}
+          <h1
+            style={{
+              fontWeight: 900,
+              fontSize: 'clamp(3rem, 9vw, 6rem)',
+              letterSpacing: '-0.04em',
+              lineHeight: 1.0,
+              color: 'var(--color-desa-green)',
+              marginBottom: '1.5rem',
+            }}
           >
-            {villageProfile.kecamatan} · {villageProfile.kabupaten} · {villageProfile.provinsi}
+            Sejahtera
+          </h1>
+
+          <p style={{ fontSize: '1rem', color: 'var(--color-desa-muted)', lineHeight: 1.7, marginBottom: '2.5rem', maxWidth: 440, margin: '0 auto 2.5rem' }}>
+            {villageProfile.kecamatan}, {villageProfile.kabupaten}, {villageProfile.provinsi}.
+            Portal informasi resmi warga desa.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-3">
+          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link
               to="/tentang"
-              className="px-6 py-3 rounded-full font-semibold text-sm flex items-center gap-2 transition-all duration-300 hover:opacity-90 active:scale-95"
               style={{
+                padding: '0.75rem 1.75rem',
+                borderRadius: '200px',
+                fontWeight: 700,
+                fontSize: '0.875rem',
+                textDecoration: 'none',
                 background: 'var(--color-desa-green)',
                 color: '#fff',
-                boxShadow: '0 4px 20px rgba(45,106,79,0.3)',
+                boxShadow: '0 4px 20px rgba(30,92,58,0.28)',
+                transition: 'opacity 0.2s, transform 0.2s',
               }}
+              onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
             >
               Kenali Desa
-              <span
-                className="w-7 h-7 rounded-full flex items-center justify-center transition-transform duration-300"
-                style={{ background: 'rgba(255,255,255,0.2)' }}
-              >
-                →
-              </span>
             </Link>
             <Link
               to="/festival"
-              className="px-6 py-3 rounded-full font-semibold text-sm flex items-center gap-2 transition-all duration-300 hover:opacity-90 active:scale-95"
               style={{
+                padding: '0.75rem 1.75rem',
+                borderRadius: '200px',
+                fontWeight: 700,
+                fontSize: '0.875rem',
+                textDecoration: 'none',
                 background: 'var(--color-fest-orange)',
                 color: '#fff',
-                boxShadow: '0 4px 20px rgba(224,123,57,0.3)',
+                boxShadow: '0 4px 20px rgba(212,98,26,0.28)',
+                transition: 'opacity 0.2s, transform 0.2s',
               }}
+              onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
             >
-              🎉 Festival Desa
+              Festival Desa
             </Link>
+          </div>
+
+          {/* Stats */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginTop: '3.5rem', maxWidth: 440, marginLeft: 'auto', marginRight: 'auto' }}>
+            <StatTile value={villageProfile.jumlahPenduduk} label="Penduduk" />
+            <StatTile value={villageProfile.jumlahKK} label="Kepala Keluarga" />
+            <StatTile value={villageProfile.luasWilayah} label="Luas Wilayah" />
           </div>
         </div>
 
         {/* Scroll indicator */}
-        <div
-          className="absolute bottom-8 left-1/2 flex flex-col items-center gap-1"
-          style={{ transform: 'translateX(-50%)', color: 'var(--color-desa-muted)' }}
-        >
-          <span className="text-xs tracking-widest uppercase">Scroll</span>
-          <span className="animate-bounce text-lg">↓</span>
+        <div style={{ position: 'absolute', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
+          <div style={{ width: 1, height: 40, background: 'var(--color-desa-green)', opacity: 0.3, animation: 'none' }} />
+          <span style={{ fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--color-desa-muted)' }}>Scroll</span>
         </div>
       </section>
 
-      {/* ── Sambutan Kades ─────────────────────────────────────── */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Avatar placeholder */}
+      {/* ── SAMBUTAN KADES ────────────────────────────────────── */}
+      <section style={{ padding: '6rem 1.5rem', background: '#fff' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3.5rem', alignItems: 'center' }}>
+          {/* Foto placeholder — geometric */}
           <div
             ref={greetingRef}
-            className="reveal rounded-[1.5rem] overflow-hidden flex items-center justify-center"
+            className="reveal"
             style={{
+              position: 'relative',
+              borderRadius: '1.5rem',
+              overflow: 'hidden',
+              aspectRatio: '3/4',
               background: 'var(--color-desa-surface)',
-              aspectRatio: '4/3',
-              border: '1px solid var(--color-desa-border)',
             }}
           >
-            <span className="text-7xl">👨‍💼</span>
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: 'linear-gradient(135deg, var(--color-desa-green) 0%, #2D7A50 50%, var(--color-desa-warm) 100%)',
+              opacity: 0.15,
+            }} />
+            <div style={{
+              position: 'absolute', bottom: 0, left: 0, right: 0,
+              padding: '1.25rem',
+              background: 'linear-gradient(to top, rgba(0,0,0,0.5), transparent)',
+            }}>
+              <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.875rem' }}>{villageProfile.kepalaDesaName}</p>
+              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.75rem' }}>Kepala Desa Sejahtera</p>
+            </div>
           </div>
 
           <div>
-            <Eyebrow>Sambutan Kepala Desa</Eyebrow>
+            <Eyebrow>Sambutan Kades</Eyebrow>
             <h2
-              className="font-bold mb-4 leading-tight"
               style={{
+                fontWeight: 800,
                 fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)',
-                letterSpacing: '-0.02em',
+                letterSpacing: '-0.03em',
+                lineHeight: 1.15,
                 color: 'var(--color-desa-text)',
+                marginBottom: '1.25rem',
               }}
             >
-              {villageProfile.kepalaDesaName}
+              Selamat Datang di<br />
+              <span style={{ color: 'var(--color-desa-green)' }}>Desa Sejahtera</span>
             </h2>
-            <p
-              className="text-base leading-loose"
-              style={{ color: 'var(--color-desa-muted)' }}
-            >
+            <p style={{ fontSize: '0.9375rem', lineHeight: 1.85, color: 'var(--color-desa-muted)' }}>
               {villageProfile.greeting}
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Shortcut Festival ──────────────────────────────────── */}
-      <section className="py-16 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div
-            ref={festivalRef}
-            className="reveal relative overflow-hidden rounded-[2rem] px-8 py-14 text-center"
-            style={{
-              background: 'var(--color-fest-bg)',
-              border: '1px solid rgba(255,255,255,0.06)',
-            }}
-          >
-            {/* Dekoratif */}
-            <div
-              className="absolute top-0 left-0 w-full h-full pointer-events-none"
-              style={{
-                background: 'radial-gradient(ellipse at 50% 0%, rgba(232,197,71,0.15) 0%, transparent 60%)',
-              }}
-            />
-
-            <span className="text-5xl mb-4 block">🎊</span>
-            <Eyebrow>15 – 17 Agustus 2026</Eyebrow>
-            <h2
-              className="font-black mb-4"
-              style={{
-                fontSize: 'clamp(1.8rem, 5vw, 3rem)',
-                letterSpacing: '-0.03em',
-                color: 'var(--color-fest-yellow)',
-              }}
-            >
-              Festival Desa Sejahtera
-            </h2>
-            <p className="mb-8 text-base" style={{ color: 'rgba(245,240,232,0.7)' }}>
-              Merayakan Bumi, Merawat Budaya. Tiga hari penuh seni, kuliner, dan kebersamaan.
-            </p>
             <Link
-              to="/festival"
-              className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full font-bold text-sm transition-all duration-300 hover:opacity-90 active:scale-95"
+              to="/tentang"
               style={{
-                background: 'var(--color-fest-yellow)',
-                color: '#0F0A04',
-                boxShadow: '0 4px 24px rgba(232,197,71,0.35)',
+                display: 'inline-block',
+                marginTop: '1.75rem',
+                padding: '0.625rem 1.5rem',
+                borderRadius: '200px',
+                fontWeight: 600,
+                fontSize: '0.875rem',
+                textDecoration: 'none',
+                border: '1.5px solid var(--color-desa-green)',
+                color: 'var(--color-desa-green)',
+                transition: 'all 0.2s',
               }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-desa-green)'; e.currentTarget.style.color = '#fff'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--color-desa-green)'; }}
             >
-              Lihat Detail Festival
-              <span
-                className="w-7 h-7 rounded-full flex items-center justify-center"
-                style={{ background: 'rgba(15,10,4,0.15)' }}
-              >
-                →
-              </span>
+              Profil Lengkap Desa
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── 3 Artikel Terbaru ──────────────────────────────────── */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto">
+      {/* ── SHORTCUT FESTIVAL ─────────────────────────────────── */}
+      <section style={{ padding: '4rem 1.5rem', background: 'var(--color-desa-bg)' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          <div
+            ref={festivalRef}
+            className="reveal"
+            style={{
+              borderRadius: '2rem',
+              overflow: 'hidden',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              background: '#fff',
+              border: '1px solid var(--color-desa-border)',
+            }}
+          >
+            {/* Strip warna festival */}
+            <div style={{
+              background: 'linear-gradient(135deg, var(--color-fest-orange) 0%, var(--color-fest-yellow) 60%, #F5D020 100%)',
+              minHeight: 200,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              padding: '2rem',
+            }}>
+              <span style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.8)', marginBottom: '0.5rem' }}>
+                15 – 17 Agustus 2026
+              </span>
+              <h2 style={{ fontWeight: 900, fontSize: 'clamp(1.6rem, 4vw, 2.4rem)', letterSpacing: '-0.03em', color: '#fff', lineHeight: 1.1, margin: 0 }}>
+                Festival Desa<br />Sejahtera
+              </h2>
+            </div>
+
+            {/* Info kanan */}
+            <div style={{ padding: '2rem 2.25rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <p style={{ fontSize: '0.9rem', lineHeight: 1.8, color: 'var(--color-desa-muted)', marginBottom: '1.5rem' }}>
+                Merayakan Bumi, Merawat Budaya. Tiga hari penuh pertunjukan seni, pameran UMKM, dan kuliner tradisional.
+              </p>
+              <Link
+                to="/festival"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.7rem 1.5rem',
+                  borderRadius: '200px',
+                  fontWeight: 700,
+                  fontSize: '0.875rem',
+                  textDecoration: 'none',
+                  background: 'var(--color-fest-orange)',
+                  color: '#fff',
+                  alignSelf: 'flex-start',
+                  transition: 'opacity 0.2s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.opacity = '0.85'; }}
+                onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
+              >
+                Lihat Detail Festival
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── ARTIKEL TERBARU ───────────────────────────────────── */}
+      <section style={{ padding: '6rem 1.5rem', background: '#fff' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <div
             ref={articlesHeadRef}
-            className="reveal flex items-end justify-between mb-12 gap-4 flex-wrap"
+            className="reveal"
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1rem' }}
           >
             <div>
               <Eyebrow>Berita Desa</Eyebrow>
-              <h2
-                className="font-bold"
-                style={{
-                  fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)',
-                  letterSpacing: '-0.02em',
-                  color: 'var(--color-desa-text)',
-                }}
-              >
+              <h2 style={{ fontWeight: 800, fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', letterSpacing: '-0.03em', color: 'var(--color-desa-text)', margin: 0 }}>
                 Kabar Terbaru
               </h2>
             </div>
             <Link
               to="/artikel"
-              className="text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all duration-200"
-              style={{ color: 'var(--color-desa-green)' }}
+              style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-desa-green)', textDecoration: 'none' }}
             >
-              Lihat semua →
+              Lihat semua artikel →
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {latestArticles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }}>
+            {latestArticles.map((article, i) => (
+              <ArticleCard key={article.id} article={article} delay={i + 1} />
             ))}
           </div>
         </div>
       </section>
+
     </PageWrapper>
   );
 }
